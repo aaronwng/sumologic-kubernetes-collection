@@ -28,8 +28,9 @@ func Test_Helm_OT_Metadata(t *testing.T) {
 		releaseName    = generateReleaseName(now)
 		valuesFilePath = "values/values_otc_metadata.yaml"
 
-		tickDuration = time.Second
-		waitDuration = time.Minute * 2
+		tickDuration    = time.Second
+		waitDuration    = time.Minute * 2
+		expectedMetrics = internal.DefaultExpectedMetrics
 	)
 
 	feat := features.New("installation").
@@ -146,6 +147,16 @@ func Test_Helm_OT_Metadata(t *testing.T) {
 				require.EqualValues(t, 0, daemonsets[0].Status.NumberUnavailable)
 				return ctx
 			}).
+		Assess("metrics are present",
+			stepfuncs.WaitUntilExpectedMetricsPresent(
+				expectedMetrics,
+				"receiver-mock",
+				"receiver-mock",
+				internal.ReceiverMockServicePort,
+				waitDuration,
+				tickDuration,
+			),
+		).
 		Feature()
 
 	testenv.Test(t, feat)
