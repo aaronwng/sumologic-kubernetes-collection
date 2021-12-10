@@ -1,0 +1,55 @@
+rancher_max_version: 2.6.2
+categories:
+- monitoring
+namespace: sumo-system
+questions:
+- variable: sumologic.accessId
+  default: ""
+  description: "AccessId"
+  label: AccessId
+  type: string
+  group: "Sumo Authentication"
+- variable: sumologic.accessKey
+  default: ""
+  description: "AccessKey"
+  label: AccessKey
+  type: string
+  group: "Sumo Authentication"
+- variable: rancher.customEndpoint
+  default: false
+  description: "Custom Endpoint"
+  label: Custom Endpoint
+  type: boolean
+  group: "Sumo Authentication"
+  show_subquestion_if: true
+  subquestions:
+  - variable: sumologic.endpoint
+    default: ""
+    description: "endpoint"
+    label: Endpoint
+    type: string
+    group: "Sumo Authentication"
+- variable: sumologic.clusterName
+  default: ""
+  description: "clusterName"
+  label: clusterName
+  type: string
+  group: "Sumo Authentication"
+- variable: kube-prometheus-stack.prometheus-node-exporter.service.port
+  default: 9200
+  description: "kube-prometheus-stack.prometheus-node-exporter.service.port"
+  label: kube-prometheus-stack.prometheus-node-exporter.service.port
+  type: number
+  group: "prometheus-node-exporter"
+- variable: kube-prometheus-stack.prometheus-node-exporter.service.targetPort
+  default: 9200
+  description: "kube-prometheus-stack.prometheus-node-exporter.service.targetPort"
+  label: kube-prometheus-stack.prometheus-node-exporter.service.targetPort
+  type: number
+  group: "prometheus-node-exporter"
+- variable: kube-prometheus-stack.prometheus-node-exporter.hostRootFsMount
+  default: false
+  description: "hostRootFsMount"
+  label: hostRootFsMount
+  type: boolean
+  group: "prometheus-node-exporter"
