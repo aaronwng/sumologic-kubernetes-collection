@@ -1,0 +1,6 @@
+template: live
+validate:
+- url: https://github.com/SumoLogic/sumologic-kubernetes-collection.git
+  branch: main
+helmRepo:
+  cname: https://sumologic.github.io/sumologic-kubernetes-collection
