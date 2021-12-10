@@ -34,26 +34,26 @@ questions:
   label: clusterName
   type: string
   group: "Sumo Authentication"
-- variable: rancher.customPrometheusNodeExporter
-  default: false
-  description: "Custom PrometheusNodeExporter"
-  label: Custom PrometheusNodeExporter
-  type: boolean
-  group: "Sumo Authentication"
-  show_subquestion_if: true
-  subquestions:
-  - variable: kube-prometheus-stack.prometheus-node-exporter.service.port
-    default: null
-    description: "kube-prometheus-stack.prometheus-node-exporter.service.port"
-    label: kube-prometheus-stack.prometheus-node-exporter.service.port
-    type: number
-    group: "prometheus-node-exporter"
-  - variable: kube-prometheus-stack.prometheus-node-exporter.service.targetPort
-    default: null
-    description: "kube-prometheus-stack.prometheus-node-exporter.service.targetPort"
-    label: kube-prometheus-stack.prometheus-node-exporter.service.targetPort
-    type: number
-    group: "prometheus-node-exporter"
+# - variable: rancher.customPrometheusNodeExporter
+#   default: false
+#   description: "Custom PrometheusNodeExporter"
+#   label: Custom PrometheusNodeExporter
+#   type: boolean
+#   group: "prometheus-node-exporter"
+#   show_subquestion_if: true
+#   subquestions:
+#   - variable: kube-prometheus-stack.prometheus-node-exporter.service.port
+#     default: null
+#     description: "kube-prometheus-stack.prometheus-node-exporter.service.port"
+#     label: kube-prometheus-stack.prometheus-node-exporter.service.port
+#     type: number
+#     group: "prometheus-node-exporter"
+#   - variable: kube-prometheus-stack.prometheus-node-exporter.service.targetPort
+#     default: null
+#     description: "kube-prometheus-stack.prometheus-node-exporter.service.targetPort"
+#     label: kube-prometheus-stack.prometheus-node-exporter.service.targetPort
+#     type: number
+#     group: "prometheus-node-exporter"
 - variable: kube-prometheus-stack.prometheus-node-exporter.hostRootFsMount
   default: false
   description: "hostRootFsMount"
