@@ -1,3 +1,7 @@
+annotations:
+  # hack rancher
+  catalog.cattle.io/certified: 🔥Hot👍
+  catalog.cattle.io/release-name: sumologic
 apiVersion: v2
 name: sumologic
 version: 2.3.0
