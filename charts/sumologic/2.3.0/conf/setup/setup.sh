@@ -22,6 +22,54 @@ export HTTP_PROXY=${HTTP_PROXY:=""}
 export HTTPS_PROXY=${HTTPS_PROXY:=""}
 export NO_PROXY=${NO_PROXY:=""}
 
+function get_personal_folder_Id() {
+    readonly RESPONSE="$(curl -XGET -s \
+        -u "${SUMOLOGIC_ACCESSID}:${SUMOLOGIC_ACCESSKEY}" \
+        "${SUMOLOGIC_BASE_URL}"v2/content/folders/personal)"
+
+    echo "${RESPONSE}" | jq -r '.id'
+}
+
+
+function install_kubernetes_app() {
+    readonly RESPONSE="$(curl --request POST -s \
+        -u "${SUMOLOGIC_ACCESSID}:${SUMOLOGIC_ACCESSKEY}" \
+        "${SUMOLOGIC_BASE_URL}"v1/apps/162ceac7-166a-4475-8427-65e170ae9837/install \
+        --header "Content-Type: application/json" \
+        --data-raw '{
+            "name": "'$COLLECTOR_NAME'",
+            "destinationFolderId": "'$1'",
+            "description": "Auto installed from kubernetes helm.",
+            "dataSourceValues": {
+                "eventslogsource": "_sourceCategory = '$COLLECTOR_NAME'/events",
+                "falcologsource": "_sourceCategory = '$COLLECTOR_NAME'/events"
+            }
+        }')"
+
+
+    echo "${RESPONSE}" | jq -r '.id'
+}
+
+function get_job_status() {
+    readonly RESPONSE="$(curl -XGET -s \
+        -u "${SUMOLOGIC_ACCESSID}:${SUMOLOGIC_ACCESSKEY}" \
+        "${SUMOLOGIC_BASE_URL}"v1/apps/install/$1/status)"
+
+    echo "${RESPONSE}" | jq -r '.status'
+}
+
+function install_sumo_app(){
+    readonly FolderId=$(get_personal_folder_Id)
+    readonly JobId=$(install_kubernetes_app $FolderId)
+    local JOB_STATUS="InProgress"
+    while [[ "$JOB_STATUS" == "InProgress" ]]
+    do
+        sleep 3
+        JOB_STATUS=$(get_job_status $JobId)
+        echo "installing sumo kubernetes app, status: ${JOB_STATUS}" 
+    done
+}
+
 function get_remaining_fields() {
     local RESPONSE
     readonly RESPONSE="$(curl -XGET -s \
@@ -88,6 +136,9 @@ else
 fi
 
 readonly COLLECTOR_NAME="{{ template "terraform.collector.name" . }}"
+
+# Install sumo kubernetes app
+install_sumo_app
 
 # Sumo Logic Collector and HTTP sources
 # Only import sources when collector exists.
