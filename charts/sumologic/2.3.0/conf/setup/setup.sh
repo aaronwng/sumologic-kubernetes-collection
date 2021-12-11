@@ -138,7 +138,7 @@ fi
 readonly COLLECTOR_NAME="{{ template "terraform.collector.name" . }}"
 
 # Install sumo kubernetes app
-install_sumo_app
+# install_sumo_app
 
 # Sumo Logic Collector and HTTP sources
 # Only import sources when collector exists.
